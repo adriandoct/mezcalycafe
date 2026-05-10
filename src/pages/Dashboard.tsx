@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { supabase, Product, Profile } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
+import type { Product, Profile } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { UploadCloud, Edit, Trash2, Plus, LogOut } from 'lucide-react';
 

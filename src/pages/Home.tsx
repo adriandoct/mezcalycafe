@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { supabase, Product } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
+import type { Product } from '../lib/supabase';
 import { ShoppingBag } from 'lucide-react';
 
 const slides = [
