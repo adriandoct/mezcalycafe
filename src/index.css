@@ -433,7 +433,7 @@ ul {
   background: white;
   border-radius: var(--radius);
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .table {
@@ -554,13 +554,89 @@ ul {
 
 /* Responsive */
 @media (max-width: 768px) {
+  /* Dashboard */
   .dashboard-container {
     grid-template-columns: 1fr;
   }
   .sidebar {
-    display: none;
+    padding: 15px 0;
   }
+  .sidebar-menu {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .sidebar-link {
+    padding: 10px;
+    font-size: 0.9rem;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+  }
+  .sidebar-link:hover, .sidebar-link.active {
+    border-left: none;
+    border-bottom: 2px solid var(--primary);
+  }
+
+  /* Typography */
   .carousel-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+  }
+  .carousel-subtitle {
+    font-size: 1.1rem;
+  }
+  .section-title {
+    font-size: 2rem;
+  }
+
+  /* Navbar */
+  .navbar .container {
+    flex-wrap: wrap;
+  }
+  .navbar-nav {
+    display: none; /* Ocultamos por defecto para usar un menú hamburguesa o similar */
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .navbar-nav.mobile-open {
+    display: flex;
+  }
+  
+  /* Tables */
+  .table-container {
+    overflow-x: auto;
+  }
+  .dashboard-content {
+    padding: 20px;
+  }
+  
+  /* Modal */
+  .modal-content {
+    width: 95%;
+    max-height: 95vh;
+  }
+  .modal-body {
+    padding: 20px;
+  }
+  .form-group-grid {
+    grid-template-columns: 1fr !important;
   }
 }
+
+/* Para ocultar el botón hamburguesa en desktop */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+}
+

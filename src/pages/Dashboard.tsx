@@ -215,7 +215,7 @@ export const Dashboard = () => {
                   <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)} required />
                 </div>
                 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                <div className="form-group-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
                   <div className="form-group">
                     <label className="form-label">Categoría</label>
                     <select className="form-control" value={category} onChange={e => setCategory(e.target.value as any)}>
