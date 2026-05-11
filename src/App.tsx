@@ -4,10 +4,13 @@ import { Home } from './pages/Home';
 import { Auth } from './pages/Auth';
 import { Dashboard } from './pages/Dashboard';
 import { supabase } from './lib/supabase';
-import { LogIn } from 'lucide-react';
+import { LogIn, ShoppingCart } from 'lucide-react';
+import { CartProvider, useCart } from './context/CartContext';
+import { Cart } from './components/Cart';
 
 const Navbar = () => {
   const [user, setUser] = React.useState<any>(null);
+  const { totalItems, setIsCartOpen } = useCart();
 
   React.useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -32,6 +35,24 @@ const Navbar = () => {
           <Link to="/" className="nav-link">Inicio</Link>
           <a href="#" className="nav-link">Catálogo</a>
           <a href="#" className="nav-link">Nosotros</a>
+          
+          <button 
+            className="btn btn-outline" 
+            style={{ padding: '8px 16px', gap: '8px', border: 'none', position: 'relative' }}
+            onClick={() => setIsCartOpen(true)}
+          >
+            <ShoppingCart size={20} />
+            {totalItems > 0 && (
+              <span style={{
+                position: 'absolute', top: '-5px', right: '-5px',
+                background: 'var(--primary)', color: 'white',
+                borderRadius: '50%', padding: '2px 6px', fontSize: '10px', fontWeight: 'bold'
+              }}>
+                {totalItems}
+              </span>
+            )}
+          </button>
+
           {user ? (
             <Link to="/dashboard" className="btn btn-primary" style={{ padding: '8px 16px' }}>Mi Panel</Link>
           ) : (
@@ -57,17 +78,20 @@ const Footer = () => (
 
 function App() {
   return (
-    <Router>
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <CartProvider>
+      <Router>
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          <Navbar />
+          <Cart />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
+          <Footer />
+        </div>
+      </Router>
+    </CartProvider>
   );
 }
 

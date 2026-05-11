@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import type { Product } from '../lib/supabase';
 import { ShoppingBag } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 const slides = [
   {
@@ -20,6 +21,7 @@ const slides = [
 export const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [products, setProducts] = useState<Product[]>([]);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -118,7 +120,11 @@ export const Home = () => {
                   <div className="product-info">
                     <h3 className="product-title">{product.name}</h3>
                     <p className="product-price">${product.price.toFixed(2)}</p>
-                    <button className="btn btn-outline" style={{ width: '100%', gap: '10px' }}>
+                    <button 
+                      className="btn btn-outline" 
+                      style={{ width: '100%', gap: '10px' }}
+                      onClick={() => addToCart(product)}
+                    >
                       <ShoppingBag size={18} /> Agregar al Carrito
                     </button>
                   </div>
