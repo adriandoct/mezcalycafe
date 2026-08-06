@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { supabase } from './lib/supabase';
 import { Home } from './pages/Home';
 import { Auth } from './pages/Auth';
 import { Dashboard } from './pages/Dashboard';
