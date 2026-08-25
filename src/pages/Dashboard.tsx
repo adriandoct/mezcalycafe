@@ -26,15 +26,29 @@ export const Dashboard = () => {
   }, []);
 
   const checkUser = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      navigate('/auth');
-      return;
+    const demoProfile = localStorage.getItem('demo_profile');
+    if (demoProfile) {
+      try {
+        setProfile(JSON.parse(demoProfile));
+        return;
+      } catch (e) {}
     }
-    
-    const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-    if (data) {
-      setProfile(data);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        navigate('/auth');
+        return;
+      }
+      
+      const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+      if (data) {
+        setProfile(data);
+      }
+    } catch (e) {
+      if (!demoProfile) {
+        navigate('/auth');
+      }
     }
   };
 
@@ -121,7 +135,12 @@ export const Dashboard = () => {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    localStorage.removeItem('demo_user');
+    localStorage.removeItem('demo_profile');
+    window.dispatchEvent(new Event('demo_auth_change'));
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {}
     navigate('/');
   };
 

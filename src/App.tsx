@@ -14,15 +14,35 @@ const Navbar = () => {
   const { totalItems, setIsCartOpen } = useCart();
 
   React.useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user || null);
-    });
+    const checkSession = () => {
+      const demoUser = localStorage.getItem('demo_user');
+      if (demoUser) {
+        try {
+          setUser(JSON.parse(demoUser));
+          return;
+        } catch (e) {}
+      }
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setUser(session?.user || null);
+      }).catch(() => {
+        setUser(null);
+      });
+    };
+
+    checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
+      if (!localStorage.getItem('demo_user')) {
+        setUser(session?.user || null);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    window.addEventListener('demo_auth_change', checkSession);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('demo_auth_change', checkSession);
+    };
   }, []);
 
   return (
